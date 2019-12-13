@@ -4,5 +4,3 @@
 from subprocess import run
 
 run("tree -aL 2".split())
-
-
