@@ -1,27 +1,35 @@
+# A sample GitHub actions workflow for python
 name: CI
 
+# When code is pushed to the repo
 on: [push]
 
+# The actions the VM will take
 jobs:
-
+  # A job called test
   test:
+    # Use an ubuntu docker image to run the tests
     runs-on: ubuntu-latest
-
+    # The steps of job test
     steps:
       - uses: actions/checkout@v1
         with:
+          # Number of commits to fetch. 0 indicates all history; Default: 1
           fetch-depth: 1
-
+        # Install python3.8 on the docker VM
       - name: Set up Python 3.8 
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
 
+        # Install the poetry package manager on the VM
       - name: Install Poetry
         uses: dschep/install-poetry-action@v1.2
         with:
           preview: true
 
+        # Setup an action to cache the installed packages if everything
+        # finishes.  Will Speed up future builds of this workflow
       - name: Cache Poetry virtualenv
         uses: actions/cache@v1
         id: cache
@@ -31,20 +39,28 @@ jobs:
           restore-keys: |
             poetry-${{ hashFiles('**/poetry.lock') }}
 
+        # Keep the install virtualenv packages in a known location
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
           poetry config virtualenvs.path ~/.virtualenvs
 
+        # Install all packages in the pyproject.toml file
       - name: Install Dependencies
         run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'
 
+        # Run Black for consistent code quality
+        # build will fail here if it doesn't meet Black's check
       - name: Code Quality
         run: poetry run black . --check
 
+        # Run test modules with pytest
       - name: Test with pytest
         env:
           DJANGO_SETTINGS_MODULE: project.settings
           SECRETS_FILE: .confidential/ci.json
         run: poetry run pytest --cov . -n 2
+
+        # if everything above succeeds, the commit will be applied to the repo
+        # otherwise the push will be rejected
