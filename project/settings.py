@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 import os
+
 from confidential import SecretsManager
 
 confidential = SecretsManager(
@@ -32,7 +33,7 @@ SECRET_KEY = "vij$cm25*##vnq-5-0dkyisd0xlskogh8r6#y9dj%d67mx43f-"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition

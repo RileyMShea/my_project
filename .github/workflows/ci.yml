@@ -17,7 +17,7 @@ jobs:
           # Number of commits to fetch. 0 indicates all history; Default: 1
           fetch-depth: 1
         # Install python3.8 on the docker VM
-      - name: Set up Python 3.8 
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
@@ -64,3 +64,4 @@ jobs:
 
         # if everything above succeeds, the commit will be applied to the repo
         # otherwise the push will be rejected
+        # Status of current and past workflows are visible @ https://github.com/RileyMShea/my_project/actions
