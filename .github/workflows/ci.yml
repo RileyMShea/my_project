@@ -10,6 +10,9 @@ jobs:
   test:
     # Use an ubuntu docker image to run the tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.6.9', '3.7.5', '3.8.0' ]
     # The steps of job test
     steps:
       - uses: actions/checkout@v1
@@ -20,7 +23,8 @@ jobs:
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
 
         # Install the poetry package manager on the VM
       - name: Install Poetry
